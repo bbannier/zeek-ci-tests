@@ -1,0 +1,12 @@
+Docker image for Zeek
+=====================
+
+This directory contains a minimum Docker image for Zeek. This image is publish
+automatically to [DockerHub](https://hub.docker.com/r/zeekurity/zeek) for
+commits to the `master` branch.
+
+To run the image execute:
+
+    docker run -it zeekurity/zeek
+
+To build the image execute `make` from this directory.
