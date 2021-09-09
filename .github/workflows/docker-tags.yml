@@ -1,9 +1,11 @@
-name: Publish Docker image for latest release
+name: Publish Docker image for tag
 
 on:
   push:
     tags:
-      - release
+      # Since this action pushes just a tagged image it is only active on tags. We exclude `-dev` tags.
+      - 'v*'
+      - '!v*-dev'
 
 jobs:
   build:
@@ -30,5 +32,4 @@ jobs:
           push: true
           tags: |
             # FIXME(bbannier): should be `zeekurity`.
-            bbannier/zeek:latest
             bbannier/zeek:${{ steps.version.outputs.RELEASE_VERSION }}

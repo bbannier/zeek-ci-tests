@@ -1,9 +1,9 @@
-name: Publish Docker image for latest release
+name: Publish Docker image for master branch
 
 on:
   push:
-    tags:
-      - release
+    # FIXME(bbannier): should me `master`.
+    branches: [topic/bbannier/issue-1625]
 
 jobs:
   build:
@@ -30,5 +30,5 @@ jobs:
           push: true
           tags: |
             # FIXME(bbannier): should be `zeekurity`.
-            bbannier/zeek:latest
-            bbannier/zeek:${{ steps.version.outputs.RELEASE_VERSION }}
+            bbannier/zeek-dev:latest
+            bbannier/zeek-dev:${{ steps.version.outputs.RELEASE_VERSION }}
