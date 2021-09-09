@@ -1,6 +1,6 @@
 # See the file "COPYING" in the main distribution directory for copyright.
 
-# # Layer to build Zeek. {{{
+# Layer to build Zeek. {{{
 FROM debian:buster-slim AS build_zeek
 
 # Configure system for build.
