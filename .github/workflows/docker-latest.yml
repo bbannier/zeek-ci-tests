@@ -28,5 +28,5 @@ jobs:
           file: docker/Dockerfile
           push: true
           tags: |
-            zeekurity/zeek:latest
-            zeekurity/zeek:$${{ steps.version.outputs.RELEASE_VERSION }}
+            bbannier/zeek:latest
+            bbannier/zeek:$${{ steps.version.outputs.RELEASE_VERSION }}
