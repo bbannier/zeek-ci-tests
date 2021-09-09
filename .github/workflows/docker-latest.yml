@@ -29,4 +29,4 @@ jobs:
           push: true
           tags: |
             bbannier/zeek:latest
-            bbannier/zeek:$${{ steps.version.outputs.RELEASE_VERSION }}
+            bbannier/zeek:${{ steps.version.outputs.RELEASE_VERSION }}
