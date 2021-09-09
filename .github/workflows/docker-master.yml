@@ -28,7 +28,7 @@ jobs:
           context: .
           file: docker/Dockerfile
           push: true
+          # FIXME(bbannier): should be `zeekurity`.
           tags: |
-            # FIXME(bbannier): should be `zeekurity`.
             bbannier/zeek-dev:latest
             bbannier/zeek-dev:${{ steps.version.outputs.RELEASE_VERSION }}
