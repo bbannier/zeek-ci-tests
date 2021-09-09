@@ -19,6 +19,7 @@
 #include "zeek/Trigger.h"
 #include "zeek/IntrusivePtr.h"
 #include "zeek/logging/Manager.h"
+#include "zeek/script_opt/StmtOptInfo.h"
 
 #include "zeek/logging/logging.bif.h"
 
@@ -35,6 +36,7 @@ const char* stmt_name(StmtTag t)
 		"catch-return",
 		"check-any-length",
 		"compiled-C++",
+		"ZAM", "ZAM-resumption",
 		"null",
 	};
 
@@ -48,11 +50,14 @@ Stmt::Stmt(StmtTag arg_tag)
 	last_access = 0;
 	access_count = 0;
 
+	opt_info = new StmtOptInfo();
+
 	SetLocationInfo(&start_location, &end_location);
 	}
 
 Stmt::~Stmt()
 	{
+	delete opt_info;
 	}
 
 StmtList* Stmt::AsStmtList()
@@ -1344,9 +1349,13 @@ ValPtr ForStmt::DoExec(Frame* f, Val* v, StmtFlowType& flow)
 	else if ( v->GetType()->Tag() == TYPE_VECTOR )
 		{
 		VectorVal* vv = v->AsVectorVal();
+		const auto& raw_vv = *vv->RawVec();
 
 		for ( auto i = 0u; i < vv->Size(); ++i )
 			{
+			if ( ! raw_vv[i] )
+				continue;
+
 			// Set the loop variable to the current index, and make
 			// another pass over the loop body.
 			f->SetElement((*loop_vars)[0], val_mgr->Count(i));
