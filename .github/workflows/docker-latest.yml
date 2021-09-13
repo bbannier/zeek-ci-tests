@@ -26,6 +26,7 @@ jobs:
           context: .
           file: docker/Dockerfile
           load: true
+          tags: ${{ env.TEST_TAG }}
       - name: Run tests
         uses: plexsystems/container-structure-test-action@v0.2.0
         with:
