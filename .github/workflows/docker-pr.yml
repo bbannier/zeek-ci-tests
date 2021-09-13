@@ -1,0 +1,26 @@
+name: Run tests on Docker image
+
+on: [pull_request]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - name: Checkout submodules
+        run: git submodule update --init --recursive
+      - uses: docker/setup-qemu-action@v1
+      - uses: docker/setup-buildx-action@v1
+      - name: Build
+        uses: docker/build-push-action@v2
+        with:
+          context: .
+          file: docker/Dockerfile
+          push: false
+          tags: |
+            zeek-test-image
+      - name: run tests
+        uses: plexsystems/container-structure-test-action@v0.2.0
+        with:
+            image: zeek-test-image
+            config: docker/container-structure-test.yaml
