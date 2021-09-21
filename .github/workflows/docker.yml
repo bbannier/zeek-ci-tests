@@ -55,7 +55,7 @@ jobs:
       - name: Compute target tag
         id: target
         env:
-          RELEASE_VERSION: ${{ steps.version.output.RELEASE_VERSION }}
+          RELEASE_VERSION: ${{ steps.version.outputs.RELEASE_VERSION }}
         run: |
           if [ "${GITHUB_REF}" = "refs/tags/release" ]; then
             echo "::set-output name=tag::zeek:latest"
