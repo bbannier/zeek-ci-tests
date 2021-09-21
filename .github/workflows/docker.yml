@@ -44,7 +44,7 @@ jobs:
             config: docker/container-structure-test.yaml
 
   publish:
-    if: github.event == 'push'
+    if: github.event.push.ref != ''
     runs-on: ubuntu-latest
     needs: build
     steps:
