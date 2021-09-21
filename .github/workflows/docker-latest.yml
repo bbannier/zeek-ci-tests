@@ -42,6 +42,8 @@ jobs:
   setup_publish:
     runs-on: ubuntu-latest
     needs: build
+    outputs:
+      version: ${{ steps.version.outputs.RELEASE_VERSION }}
     steps:
       - uses: actions/checkout@v2
       - name: Login to DockerHub
@@ -66,4 +68,4 @@ jobs:
           push: true
           tags: |
             zeekurity/zeek:latest
-            zeekurity/zeek:${{ jobs.stepup_publish.steps.version.outputs.RELEASE_VERSION }}
+            zeekurity/zeek:${{ needs.setup_publish.outputs.version }}
