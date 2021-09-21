@@ -25,7 +25,11 @@ RUN apt-get -q update \
  && apt-get clean \
  && rm -rf /var/lib/apt/lists/*
 
+# Copy over the Zeek source tree.
+# NOTE: This assumes that we build in the context of the parent directory (the
+# Git checkout root). We e.g., ensure that in the `Makefile` in this directory.
 COPY . /src/zeek
+
 WORKDIR /src/zeek
 RUN ./configure \
      --generator=Ninja \
