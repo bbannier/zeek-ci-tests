@@ -41,6 +41,9 @@ jobs:
 
   setup_publish:
     runs-on: ubuntu-latest
+    # Since Docker login tokens can time out, make sure to sequence this job
+    # after the image has been built and tested.
+    needs: test
     outputs:
       version: ${{ steps.version.outputs.RELEASE_VERSION }}
     steps:
