@@ -1,6 +1,6 @@
 # See the file "COPYING" in the main distribution directory for copyright.
 
-# Layer to build Zeek. {{{
+# Layer to build Zeek.
 FROM debian:buster-slim AS build_zeek
 
 # Configure system for build.
@@ -31,9 +31,8 @@ RUN ./configure \
      --generator=Ninja \
      --build-type=Release \
  && ninja -C build install
-# }}}
 
-# Final layer containing all artifacts. {{{
+# Final layer containing all artifacts.
 FROM debian:buster-slim AS final
 
 RUN apt-get -q update \
@@ -57,6 +56,3 @@ ENV PATH "/usr/local/zeek/bin:${PATH}"
 
 # Setup zkg.
 RUN zkg env >> /root/.bashrc
-# }}}
-
-# vim: fdm=marker
