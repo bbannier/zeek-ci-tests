@@ -32,15 +32,11 @@ jobs:
         with:
           context: ./
           file: docker/Dockerfile
-          # Load and tag the image so it can be used by the `test` job below.
+          # Load and tag the image so it can be used by the test job below.
           load: true
           tags: ${{ env.TEST_TAG }}
 
-  test:
-    runs-on: ubuntu-latest
-    needs: build
-    steps:
-      - uses: actions/checkout@v2
+      # Run tests on the just created image.
       - name: Run tests
         uses: plexsystems/container-structure-test-action@v0.2.0
         with:
@@ -50,7 +46,7 @@ jobs:
   publish:
     if: github.event == 'push'
     runs-on: ubuntu-latest
-    needs: [build, test]
+    needs: build
     steps:
       - uses: actions/checkout@v2
       - name: Get Version
