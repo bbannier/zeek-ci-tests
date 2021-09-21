@@ -56,7 +56,6 @@ COPY --from=build_zeek /usr/local/zeek /usr/local/zeek
 ENV PATH "/usr/local/zeek/bin:${PATH}"
 
 # Setup zkg.
-RUN zkg autoconfig --force
 RUN zkg env >> /root/.bashrc
 # }}}
 
