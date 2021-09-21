@@ -57,9 +57,16 @@ jobs:
         env:
           RELEASE_VERSION: ${{ steps.version.outputs.RELEASE_VERSION }}
         run: |
+          # Translate the Github reference into a tag name.
+          #
+          # - `release` tag maps to `zeek:latest`
+          # - `v*` tag (excluding `v*-dev` tags) maps to `zeek:RELEASE_VERSION`
+          # - `master` branch maps to `zeek-dev:latest`
+          #
+          # Any other refs are not published below.
           if [ "${GITHUB_REF}" = "refs/tags/release" ]; then
             echo "::set-output name=tag::zeek:latest"
-          elif [ "${GITHUB_REF}" = "refs/heads/main" ]; then
+          elif [ "${GITHUB_REF}" = "refs/heads/master" ]; then
             echo "::set-output name=tag::zeek-dev:latest"
           elif [[ "${GITHUB_REF}" = refs/heads/v* ]] && [[ "${GITHUB_REF}" != refs/heads/v*-dev ]]; then
             echo "::set-output name=tag::zeek:${RELEASE_VERSION}"
@@ -72,6 +79,7 @@ jobs:
           password: ${{ secrets.DOCKER_PASSWORD }}
 
       - name: Push
+        # Only publish if we did compute a tag.
         if: steps.target.outputs.tag != ''
         uses: docker/build-push-action@v2
         with:
@@ -79,4 +87,4 @@ jobs:
           file: docker/Dockerfile
           push: true
           tags: |
-            zeekurity/${{ steps.target.tag}}
+            zeekurity/${{ steps.target.outputs.tag}}
