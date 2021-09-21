@@ -54,18 +54,15 @@ jobs:
         run: echo "::set-output name=RELEASE_VERSION::$(cat VERSION)"
       - name: Compute target tag
         id: target
+        env:
+          RELEASE_VERSION: ${{ steps.version.output.RELEASE_VERSION }}
         run: |
           if [ "${GITHUB_REF}" = "refs/tags/release" ]; then
-            echo "set-output name=tag::zeek:latest"
-            exit
-          fi
-          if [ "${GITHUB_REF}" = "refs/heads/main" ]; then
-            echo "set-output name=tag::zeek-dev:latest"
-            exit
-          fi
-          if [[ "${GITHUB_REF}" = refs/heads/v* ]] && [[ "${GITHUB_REF}" != refs/heads/v*-dev ]]; then
-            echo "set-output name=tag::zeek:${{ steps.version.RELEASE_VERSION }}"
-            exit
+            echo "::set-output name=tag::zeek:latest"
+          elif [ "${GITHUB_REF}" = "refs/heads/main" ]; then
+            echo "::set-output name=tag::zeek-dev:latest"
+          elif [[ "${GITHUB_REF}" = refs/heads/v* ]] && [[ "${GITHUB_REF}" != refs/heads/v*-dev ]]; then
+            echo "::set-output name=tag::zeek:${RELEASE_VERSION}"
           fi
 
       - name: Login to DockerHub
